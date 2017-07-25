@@ -25,6 +25,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import java.net.URL;
+import java.util.Map;
 
 /**
  * Base Activity for applications integrating Jitsi Meet at a higher level. It
@@ -40,7 +41,7 @@ import java.net.URL;
 public class JitsiMeetActivity extends AppCompatActivity {
     /**
      * The request code identifying requests for the permission to draw on top
-     * of other apps. The value must be 16-bit and is arbitrarily chosen here. 
+     * of other apps. The value must be 16-bit and is arbitrarily chosen here.
      */
     private static final int OVERLAY_PERMISSION_REQUEST_CODE
         = (int) (Math.random() * Short.MAX_VALUE);
@@ -96,6 +97,15 @@ public class JitsiMeetActivity extends AppCompatActivity {
      */
     public void loadURL(@Nullable URL url) {
         view.loadURL(url);
+    }
+
+    public void join(
+        String domain,
+        String room,
+        Map<String, Object> configOverwrite,
+        String jwtToken) {
+
+        view.join(domain, room, configOverwrite, jwtToken);
     }
 
     /**

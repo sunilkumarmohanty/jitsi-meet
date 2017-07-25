@@ -176,6 +176,45 @@ static NSMapTable<NSString *, JitsiMeetView *> *views;
 
 #pragma mark API
 
+- (void)on:(NSString *)domain
+      load:(NSString *)room
+  withConfig:(NSDictionary *)configOverwrite
+    andJWT:(NSString *)token{
+
+    NSMutableString* url = [[NSMutableString alloc] init];
+
+    [url appendFormat:@"https://%@/%@", domain, room];
+    if (token) {
+        [url appendFormat:@"?jwt=%@", token];
+    }
+    NSMutableString* query = [[NSMutableString alloc] init];
+    if (configOverwrite && [configOverwrite count] > 0) {
+        BOOL first = true;
+        for (id key in configOverwrite) {
+            NSMutableString* format = [[NSMutableString alloc] initWithString:@"config.%@="];
+            if (!first) {
+                [format insertString:@"&" atIndex:0];
+            } else {
+                first = false;
+            }
+            NSObject* value = [configOverwrite valueForKey:key];
+            if ([value isKindOfClass:[NSString class]]) {
+                [format appendString:@"\"%@\""];
+            } else {
+                [format appendString:@"%@"];
+            }
+            [query appendFormat:format, key, value];
+
+        }
+        [url appendString:@"#"];
+        [url appendString:[query stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+    }
+
+    NSLog(@"CONSTRUCTED URL STR: %@", url);
+
+    [self loadURL:[[NSURL alloc] initWithString:url]];
+}
+
 /**
  * Loads the given URL and joins the specified conference. If the specified URL
  * is null, the welcome page is shown.
@@ -189,6 +228,9 @@ static NSMapTable<NSString *, JitsiMeetView *> *views;
     if (url) {
         [props setObject:url.absoluteString forKey:@"url"];
     }
+
+    NSLog(@"URL: %@", url.absoluteString);
+
     // welcomePageEnabled
     [props setObject:@(self.welcomePageEnabled) forKey:@"welcomePageEnabled"];
 

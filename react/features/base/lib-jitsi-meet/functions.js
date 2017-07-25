@@ -56,9 +56,11 @@ export function isFatalJitsiConnectionError(error: string) {
  *
  * @param {string} host - Host where config.js is hosted.
  * @param {string} path='config.js' - Relative pah to config.js file.
+ * @param {Object} location - FIXME.
  * @returns {Promise<Object>}
  */
-export function loadConfig(host: string, path: string = 'config.js') {
+export function loadConfig(host: string, path: string = 'config.js',
+                           location: Object) {
     let promise;
 
     if (typeof APP === 'undefined') {
@@ -92,7 +94,12 @@ export function loadConfig(host: string, path: string = 'config.js') {
     // config, interfaceConfig, and loggingConfig should be overwritten by URL
     // params.
     promise = promise.then(value => {
-        setConfigFromURLParams();
+        setConfigFromURLParams(
+            location, {
+                config: value,
+                interfaceConfig: window.interfaceConfig,
+                loggingConfig: window.loggingConfig
+            });
 
         return value;
     });

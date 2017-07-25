@@ -397,6 +397,10 @@ export class AbstractApp extends Component {
      * @returns {void}
      */
     _openURL(url) {
+
+        // FIXME remove debug
+        console.info(`OPEN URL: ${url}`);
+
         this._getStore().dispatch(appNavigate(url));
     }
 }

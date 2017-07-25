@@ -17,6 +17,9 @@ export default function parseURLParams(
     const paramStr = source === 'search' ? url.search : url.hash;
     const params = {};
 
+    // FIXME remove debug
+    console.info('PARSE URL PARAMS: ', url, dontParse, source, paramStr);
+
     // eslint-disable-next-line newline-per-chained-call
     paramStr && paramStr.substr(1).split('&').forEach(part => {
         const param = part.split('=');

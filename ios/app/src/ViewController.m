@@ -37,7 +37,13 @@
     // SDK at the time of this writing but it is clearer to be explicit
     // about what we want anyway.
     view.welcomePageEnabled = YES;
-    [view loadURL:nil];
+
+  NSMutableDictionary* config = [[NSMutableDictionary alloc] init];
+
+  [config setValue:@false forKey:@"p2p.enabled"];
+  [config setValue:[NSNumber numberWithInt:11] forKey:@"p2p.backToP2PDelay"];
+
+  [view on:@"pawel.jitsi.net" load:@"test12345" withConfig:config andJWT:NULL];
 }
 
 @end

@@ -213,5 +213,7 @@ function _loadConfig(location: Object) {
 
     // TDOO userinfo
 
-    return loadConfig(protocol + location.host + (location.contextRoot || '/'));
+    return loadConfig(
+        protocol + location.host + (location.contextRoot || '/'),
+        undefined, location);
 }

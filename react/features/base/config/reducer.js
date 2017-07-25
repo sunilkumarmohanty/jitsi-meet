@@ -109,6 +109,9 @@ function _setConfig(state, action) {
         _getInitialState()
     );
 
+    // FIXME remove debug
+    console.info('NEW CONFIG ', newState);
+
     return equals(state, newState) ? state : newState;
 }
 

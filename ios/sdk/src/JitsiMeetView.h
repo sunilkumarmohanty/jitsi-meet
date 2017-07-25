@@ -37,6 +37,11 @@
   sourceApplication:(NSString * _Nullable)sourceApplication
          annotation:(id _Nullable)annotation;
 
+- (void)on:(NSString * _Nonnull)domain
+      load:(NSString * _Nonnull)room
+withConfig:(NSDictionary * _Nonnull)configOverwrite
+    andJWT:(NSString * _Nullable)token;
+
 - (void)loadURL:(NSURL * _Nullable)url;
 
 @end

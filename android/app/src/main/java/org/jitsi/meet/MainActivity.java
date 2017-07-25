@@ -20,6 +20,9 @@ import android.os.Bundle;
 
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * The one and only {@link Activity} that the Jitsi Meet app needs. The
  * {@code Activity} is launched in {@code singleTask} mode, so it will be
@@ -45,5 +48,13 @@ public class MainActivity extends JitsiMeetActivity {
         setWelcomePageEnabled(true);
 
         super.onCreate(savedInstanceState);
+
+        Map<String, Object> config = new HashMap();
+        config.put("p2p.enabled", false);
+        config.put("p2p.backToP2PDelay", 13);
+        config.put("displayName", "blabla");
+
+        this.join(
+            "pawel.jitsi.net", "test12345", config, null);
     }
 }

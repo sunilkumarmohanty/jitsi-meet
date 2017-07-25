@@ -29,8 +29,10 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.common.LifecycleState;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
@@ -250,6 +252,53 @@ public class JitsiMeetView extends FrameLayout {
             .startReactApplication(reactInstanceManager, "App", props);
         reactRootView.setBackgroundColor(BACKGROUND_COLOR);
         addView(reactRootView);
+    }
+
+    public void join(
+            String domain,
+            String room,
+            Map<String, Object> configOverwrite,
+            String jwtToken) {
+
+        StringBuilder urlStr
+            = new StringBuilder("https://" + domain + "/" + room);
+
+        if (jwtToken != null) {
+            urlStr.append("?jwt=").append(jwtToken);
+        }
+
+        if (configOverwrite.size() > 0) {
+            urlStr.append("#");
+            boolean first = true;
+            for (Map.Entry<String,Object> entry : configOverwrite.entrySet()) {
+                String format = "config.%s=";
+                if (first) {
+                    first = false;
+                } else {
+                    format = "&" + format;
+                }
+                Object value = entry.getValue();
+                if (value instanceof String) {
+                    format += "\"%s\"";
+                } else {
+                    format += "%s";
+                }
+                urlStr.append(
+                    String.format(
+                        format, entry.getKey(), String.valueOf(value)));
+            }
+        }
+
+        try {
+            URL url = new URL(urlStr.toString());
+
+            System.err.println(
+                "CONSTRUCTED URL: " + url.toString() + " from " + urlStr);
+
+            this.loadURL(url);
+        } catch (MalformedURLException exc) {
+            System.err.println("ERROR: " + exc + " \n" + exc.getStackTrace());
+        }
     }
 
     /**

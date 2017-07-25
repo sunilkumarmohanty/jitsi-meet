@@ -204,12 +204,16 @@ export function overrideConfigJSON(
  *      }
  * }.
  *
+ * @param {Object} location - FIXME.
+ * @param {Object} configs - FIXME.
+ *
  * @returns {void}
  */
-export function setConfigFromURLParams() {
-    const params = parseURLParams(window.location);
+export function setConfigFromURLParams(
+    location: Object,
+    { config: Object, interfaceConfig: Object, loggingConfig: Object }) {
+    const params = parseURLParams(location);
 
-    const { config, interfaceConfig, loggingConfig } = window;
     const json = {};
 
     // TODO We're still in the middle ground between old Web with config,
