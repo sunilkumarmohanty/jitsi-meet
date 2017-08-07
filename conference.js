@@ -1359,6 +1359,9 @@ export default {
 
     /**
      * Toggles between screensharing and camera video.
+     *
+     * @param {boolean} toggle - Indicates whether screen sharing should be
+     * started or stopped.
      * @param {Object} [options] - Screen sharing options that will be passed to
      * createLocalTracks.
      * @param {Array<string>} [options.desktopSharingSources] - Array with the
@@ -1366,7 +1369,7 @@ export default {
      * 'window', etc.).
      * @return {Promise.<T>}
      */
-    toggleScreenSharing(options = {}) {
+    toggleScreenSharing(toggle = !this._untoggleScreenSharing, options = {}) {
         if (this.videoSwitchInProgress) {
             return Promise.reject('Switch in progress.');
         }
@@ -1381,7 +1384,7 @@ export default {
             return Promise.reject('No screensharing in audio only mode');
         }
 
-        if (!this._untoggleScreenSharing) {
+        if (toggle) {
             return this._switchToScreenSharing(options);
         } else {
             return this._untoggleScreenSharing();
